@@ -1,4 +1,5 @@
-archiver [![archiver GoDoc](https://img.shields.io/badge/reference-godoc-blue.svg?style=flat-square)](https://godoc.org/github.com/mholt/archiver) <a href="https://dev.azure.com/mholt-dev/Archiver/_build"><img src="https://img.shields.io/azure-devops/build/mholt-dev/1e14e7f7-f929-4fec-a1db-fa5a3c0d4ca9/2/master.svg?label=cross-platform%20tests&style=flat-square"></a>
+archiver [![archiver GoDoc](https://img.shields.io/badge/reference-godoc-blue.svg?style=flat-square)](https://pkg.go.dev/github.com/mholt/archiver?tab=doc) <a href="https://dev.azure.com/mholt-dev/Archiver/_build"><img src="https://img.shields.io/azure-devops/build/mholt-dev/1e14e7f7-f929-4fec-a1db-fa5a3c0d4ca9/2/master.svg?label=cross-platform%20tests&style=flat-square"></a>
+========
 
 Introducing **Archiver 3.1** - a cross-platform, multi-format archive utility and Go library. A powerful and flexible library meets an elegant CLI in this generic replacement for several platform-specific or format-specific archive utilities.
 
@@ -48,17 +49,22 @@ Files are put into the root of the archive; directories are recursively added, p
 
 Tar files can optionally be compressed using any of the above compression formats.
 
-## GoDoc
-
-See <https://pkg.go.dev/github.com/mholt/archiver/v3>
 
 ## Install
 
+To install the runnable binary to your $GOPATH/bin:
+
 ```bash
-go get -u github.com/mholt/archiver/v3/cmd/arc
+$ go install github.com/mholt/archiver/cmd/arc
 ```
 
-#### Windows 10
+Or download binaries from the [releases](https://github.com/mholt/archiver/releases) page.
+
+To use as a dependency in your project:
+
+```
+$ go get github.com/mholt/archiver/v3
+```
 
 
 ## Command Use
@@ -68,32 +74,31 @@ go get -u github.com/mholt/archiver/v3/cmd/arc
 ```bash
 # Syntax: arc archive [archive name] [input files...]
 
-arc archive test.tar.gz file1.txt images/file2.jpg folder/subfolder
+$ arc archive test.tar.gz file1.txt images/file2.jpg folder/subfolder
 ```
 
 (At least one input file is required.)
+
 
 ### Extract entire archive
 
 ```bash
 # Syntax: arc unarchive [archive name] [destination]
 
-arc unarchive test.tar.gz
+$ arc unarchive test.tar.gz
 ```
 
 (The destination path is optional; default is current directory.)
 
 The archive name must end with a supported file extension&mdash;this is how it knows what kind of archive to make. Run `arc help` for more help.
 
+
 ### List archive contents
 
 ```bash
 # Syntax: arc ls [archive name]
 
-arc ls caddy_dist.tar.gz
-```
-
-```txt
+$ arc ls caddy_dist.tar.gz
 drwxr-xr-x  matt    staff   0       2018-09-19 15:47:18 -0600 MDT   dist/
 -rw-r--r--  matt    staff   6148    2017-08-07 18:34:22 -0600 MDT   dist/.DS_Store
 -rw-r--r--  matt    staff   22481   2018-09-19 15:47:18 -0600 MDT   dist/CHANGES.txt
@@ -104,21 +109,23 @@ drwxr-xr-x  matt    staff   0       2018-09-19 15:47:18 -0600 MDT   dist/
 ...
 ```
 
+
 ### Extract a specific file or folder from an archive
 
 ```bash
 # Syntax: arc extract [archive name] [path in archive] [destination on disk]
 
-arc extract test.tar.gz foo/hello.txt extracted/hello.txt
+$ arc extract test.tar.gz foo/hello.txt extracted/hello.txt
 ```
+
 
 ### Compress a single file
 
 ```bash
 # Syntax: arc compress [input file] [output file]
 
-arc compress test.txt compressed_test.txt.gz
-arc compress test.txt gz
+$ arc compress test.txt compressed_test.txt.gz
+$ arc compress test.txt gz
 ```
 
 For convenience, the output file (second argument) may simply be a compression format (without leading dot), in which case the output filename will be the same as the input filename but with the format extension appended, and the input file will be deleted if successful.
@@ -128,31 +135,28 @@ For convenience, the output file (second argument) may simply be a compression f
 ```bash
 # Syntax: arc decompress [input file] [output file]
 
-arc decompress test.txt.gz original_test.txt
-arc decompress test.txt.gz
+$ arc decompress test.txt.gz original_test.txt
+$ arc decompress test.txt.gz
 ```
 
 For convenience, the output file (second argument) may be omitted. In that case, the output filename will have the same name as the input filename, but with the compression extension stripped from the end; and the input file will be deleted if successful.
+
 
 ### Flags
 
 Flags are specified before the subcommand. Use `arc help` or `arc -h` to get usage help and a description of flags with their default values.
 
+
+
 ## Library Use
 
 The archiver package allows you to easily create and open archives, walk their contents, extract specific files, compress and decompress files, and even stream archives in and out using pure io.Reader and io.Writer interfaces, without ever needing to touch the disk.
-
-To use as a dependency in your project:
-
-```bash
-go get github.com/mholt/archiver/v3
-```
 
 ```go
 import "github.com/mholt/archiver/v3"
 ```
 
-[See the package's GoDoc](https://godoc.org/github.com/mholt/archiver) for full API documentation.
+[See the package's GoDoc](https://pkg.go.dev/github.com/mholt/archiver?tab=doc) for full API documentation.
 
 For example, creating or unpacking an archive file:
 
@@ -162,7 +166,7 @@ err := archiver.Archive([]string{"testdata", "other/file.txt"}, "test.zip")
 err = archiver.Unarchive("test.tar.gz", "test")
 ```
 
-The archive format is determined by file extension. (There are [several functions in this package](https://godoc.org/github.com/mholt/archiver) which perform a task by inferring the format from file extension or file header, including `Archive()`, `Unarchive()`, `CompressFile()`, and `DecompressFile()`.)
+The archive format is determined by file extension. (There are [several functions in this package](https://pkg.go.dev/github.com/mholt/archiver?tab=doc) which perform a task by inferring the format from file extension or file header, including `Archive()`, `Unarchive()`, `CompressFile()`, and `DecompressFile()`.)
 
 To configure the archiver used or perform, create an instance of the format's type:
 
@@ -205,7 +209,7 @@ for _, fname := range filenames {
 	if err != nil {
 		return err
 	}
-
+	
 	// get file's name for the inside of the archive
 	internalName, err := archiver.NameInArchive(info, fname, fname)
 	if err != nil {
@@ -235,9 +239,10 @@ for _, fname := range filenames {
 
 The `archiver.File` type allows you to use actual files with archives, or to mimic files when you only have streams.
 
-There's a lot more that can be done, too. [See the GoDoc](https://godoc.org/github.com/mholt/archiver) for full API documentation.
+There's a lot more that can be done, too. [See the GoDoc](https://pkg.go.dev/github.com/mholt/archiver?tab=doc) for full API documentation.
 
 **Security note: This package does NOT attempt to mitigate zip-slip attacks.** It is [extremely difficult](https://github.com/rubyzip/rubyzip/pull/376) [to do properly](https://github.com/mholt/archiver/pull/65#issuecomment-395988244) and [seemingly impossible to mitigate effectively across platforms](https://github.com/golang/go/issues/20126). [Attempted fixes have broken processing of legitimate files in production](https://github.com/mholt/archiver/pull/70#issuecomment-423267320), rendering the program unusable. Our recommendation instead is to inspect the contents of an untrusted archive before extracting it (this package provides `Walkers`) and decide if you want to proceed with extraction.
+
 
 ## Project Values
 
