@@ -1,4 +1,4 @@
-# archiver [![archiver GoDoc](https://img.shields.io/badge/reference-godoc-blue.svg?style=flat-square)](https://pkg.go.dev/github.com/mholt/archiver?tab=doc) <a href="https://dev.azure.com/mholt-dev/Archiver/_build"><img src="https://img.shields.io/azure-devops/build/mholt-dev/1e14e7f7-f929-4fec-a1db-fa5a3c0d4ca9/2/master.svg?label=cross-platform%20tests&style=flat-square"></a>
+archiver [![archiver GoDoc](https://img.shields.io/badge/reference-godoc-blue.svg?style=flat-square)](https://godoc.org/github.com/mholt/archiver) <a href="https://dev.azure.com/mholt-dev/Archiver/_build"><img src="https://img.shields.io/azure-devops/build/mholt-dev/1e14e7f7-f929-4fec-a1db-fa5a3c0d4ca9/2/master.svg?label=cross-platform%20tests&style=flat-square"></a>
 
 Introducing **Archiver 3.1** - a cross-platform, multi-format archive utility and Go library. A powerful and flexible library meets an elegant CLI in this generic replacement for several platform-specific or format-specific archive utilities.
 
@@ -54,70 +54,12 @@ See <https://pkg.go.dev/github.com/mholt/archiver/v3>
 
 ## Install
 
-### With webi
-
-[`webi`](https://webinstall.dev/arc) will install `webi` and `arc` to `~/.local/bin/` and update your `PATH`.
-
-#### Mac, Linux, Raspberry Pi
-
 ```bash
-curl -fsS https://webinstall.dev/arc | bash
+go get -u github.com/mholt/archiver/v3/cmd/arc
 ```
 
 #### Windows 10
 
-```pwsh
-curl.exe -fsS -A MS https://webinstall.dev/arc | powershell
-```
-
-### With Go
-
-To install the runnable binary to your \$GOPATH/bin:
-
-```bash
-go get github.com/mholt/archiver/cmd/arc
-```
-
-### Manually
-
-To install manually
-
-1. Download the binary for your platform from the [Github Releases](https://github.com/mholt/archiver/releases) page.
-2. Move the binary to a location in your path, for example:
-   - without `sudo`:
-     ```bash
-     chmod a+x ~/Downloads/arc_*
-     mkdir -p ~/.local/bin
-     mv ~/Downloads/arc_* ~/.local/bin/arc
-     ```
-   - as `root`:
-     ```bash
-     chmod a+x ~/Downloads/arc_*
-     sudo mkdir -p /usr/local/bin
-     sudo mv ~/Downloads/arc_* /usr/local/bin/arc
-     ```
-3. If needed, update `~/.bashrc` or `~/.profile` to include add `arc` in your `PATH`, for example:
-   ```
-   echo 'PATH="$HOME:/.local/bin:$PATH"' >> ~/.bashrc
-   ```
-
-## Build from Source
-
-You can successfully build `arc` with just the go tooling, or with `goreleaser`.
-
-### With `go`
-
-```bash
-go build cmd/arc/*.go
-```
-
-### Multi-platform with `goreleaser`
-
-Builds with `goreleaser` will also include version info.
-
-```bash
-goreleaser --snapshot --skip-publish --rm-dist
-```
 
 ## Command Use
 
@@ -210,7 +152,7 @@ go get github.com/mholt/archiver/v3
 import "github.com/mholt/archiver/v3"
 ```
 
-[See the package's GoDoc](https://pkg.go.dev/github.com/mholt/archiver?tab=doc) for full API documentation.
+[See the package's GoDoc](https://godoc.org/github.com/mholt/archiver) for full API documentation.
 
 For example, creating or unpacking an archive file:
 
@@ -220,7 +162,7 @@ err := archiver.Archive([]string{"testdata", "other/file.txt"}, "test.zip")
 err = archiver.Unarchive("test.tar.gz", "test")
 ```
 
-The archive format is determined by file extension. (There are [several functions in this package](https://pkg.go.dev/github.com/mholt/archiver?tab=doc) which perform a task by inferring the format from file extension or file header, including `Archive()`, `Unarchive()`, `CompressFile()`, and `DecompressFile()`.)
+The archive format is determined by file extension. (There are [several functions in this package](https://godoc.org/github.com/mholt/archiver) which perform a task by inferring the format from file extension or file header, including `Archive()`, `Unarchive()`, `CompressFile()`, and `DecompressFile()`.)
 
 To configure the archiver used or perform, create an instance of the format's type:
 
@@ -293,7 +235,7 @@ for _, fname := range filenames {
 
 The `archiver.File` type allows you to use actual files with archives, or to mimic files when you only have streams.
 
-There's a lot more that can be done, too. [See the GoDoc](https://pkg.go.dev/github.com/mholt/archiver?tab=doc) for full API documentation.
+There's a lot more that can be done, too. [See the GoDoc](https://godoc.org/github.com/mholt/archiver) for full API documentation.
 
 **Security note: This package does NOT attempt to mitigate zip-slip attacks.** It is [extremely difficult](https://github.com/rubyzip/rubyzip/pull/376) [to do properly](https://github.com/mholt/archiver/pull/65#issuecomment-395988244) and [seemingly impossible to mitigate effectively across platforms](https://github.com/golang/go/issues/20126). [Attempted fixes have broken processing of legitimate files in production](https://github.com/mholt/archiver/pull/70#issuecomment-423267320), rendering the program unusable. Our recommendation instead is to inspect the contents of an untrusted archive before extracting it (this package provides `Walkers`) and decide if you want to proceed with extraction.
 
